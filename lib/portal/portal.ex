@@ -30,3 +30,22 @@ defmodule Portal do
     %Portal{portal | total_transfers: portal.total_transfers + 1}
   end
 end
+
+defimpl Inspect, for: Portal do
+  def inspect(%Portal{left: left, right: right, total_transfers: total_transfers}, _) do
+    left_door = inspect(left)
+    right_door = inspect(right)
+
+    left_data = inspect(Enum.reverse(Portal.Door.get(left)))
+    right_data = inspect(Portal.Door.get(right))
+
+    max_padding = max(String.length(left_data), String.length(left_door))
+
+    """
+    % Portal
+      #{String.pad_leading(left_door, max_padding)} <> #{right_door}
+      #{String.pad_leading(left_data, max_padding)} <> #{right_data}
+                #{total_transfers} Total Transfers
+    """
+  end
+end
