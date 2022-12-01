@@ -29,6 +29,13 @@ defmodule Portal do
     # Let's return the portal itself
     %Portal{portal | total_transfers: portal.total_transfers + 1}
   end
+
+  @moduledoc """
+  Shoots, aka creates, a new door with the given 'color'.
+  """
+  def shoot(color) do
+    DynamicSupervisor.start_child(Portal.DoorSupervisor, {Portal.Door, color})
+  end
 end
 
 defimpl Inspect, for: Portal do
